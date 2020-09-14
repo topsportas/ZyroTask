@@ -938,6 +938,14 @@
     },
     {
         "make": "Audi",
+        "model": "A6",
+        "year": "1998-01",
+        "mileage": "",
+        "price": "300",
+        "features": {}
+    },
+    {
+        "make": "Audi",
         "model": "80",
         "year": "1994-07",
         "mileage": "",
@@ -1056,14 +1064,6 @@
     },
     {
         "make": "Audi",
-        "model": "80",
-        "year": "1990-05",
-        "mileage": "265 045 km",
-        "price": "800",
-        "features": {}
-    },
-    {
-        "make": "Audi",
         "model": "A3",
         "year": "1997",
         "mileage": "370 000 km",
@@ -1073,6 +1073,14 @@
                 "Light alloy rims"
             ]
         }
+    },
+    {
+        "make": "Audi",
+        "model": "80",
+        "year": "1990-05",
+        "mileage": "265 045 km",
+        "price": "800",
+        "features": {}
     },
     {
         "make": "Audi",
@@ -3517,14 +3525,6 @@
     {
         "make": "Audi",
         "model": "A3",
-        "year": "1998-08",
-        "mileage": "",
-        "price": "600",
-        "features": {}
-    },
-    {
-        "make": "Audi",
-        "model": "A3",
         "year": "2000-06",
         "mileage": "250 000 km",
         "price": "600",
@@ -3534,6 +3534,14 @@
                 "Tow hook"
             ]
         }
+    },
+    {
+        "make": "Audi",
+        "model": "A3",
+        "year": "1998-08",
+        "mileage": "",
+        "price": "600",
+        "features": {}
     },
     {
         "make": "Audi",
@@ -3568,7 +3576,7 @@
         "model": "A6",
         "year": "1999",
         "mileage": "261 615 km",
-        "price": "1400",
+        "price": "1300",
         "features": {
             "Security": [
                 "Alarm"
@@ -3655,14 +3663,6 @@
         "make": "Audi",
         "model": "A6",
         "year": "2000-05",
-        "mileage": "",
-        "price": "1650",
-        "features": {}
-    },
-    {
-        "make": "Audi",
-        "model": "A4",
-        "year": "2001-05",
         "mileage": "",
         "price": "1650",
         "features": {}

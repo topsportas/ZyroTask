@@ -13,10 +13,7 @@ chromedriver = path + "chromedriver.exe"
 driver = webdriver.Chrome(chromedriver)
 driver.get("https://mekass.wixsite.com/website")
 texts = driver.find_elements_by_class_name("font_9")
-all_texts = []
-for text in texts:
-	all_texts.append(text.text)
-
+all_texts = [i.text for i in texts]
 dictOfWords = { i : all_texts[i] for i in range(0, len(all_texts) ) }
 with open('all_texts.json', 'w') as f:
 	json.dump(dictOfWords,f, indent=4)

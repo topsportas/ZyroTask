@@ -3,6 +3,9 @@ import requests
 import json
 from json import JSONEncoder
 import pandas as pd
+import threading
+import queue
+
 
 
 class Car:
@@ -58,56 +61,65 @@ def ParseAd(url):
     )
 
 
-baseURL = "https://en.autoplius.lt/ads/used-cars?make_id=99"
-pageLinks = [baseURL + "&page_nr=" + str(x+1) for x in range(5)]
-carAdLinks = []
-results = []
-
-for link in pageLinks:
-    r = requests.get(link)
-    soup = bs(r.content, "lxml")
-    elems = soup.findAll("a", {"class": "announcement-item"})
-    for e in elems:
-        carAdLinks.append(e.get("href"))
+if __name__ == "__main__":
+    que = queue.Queue()
+    baseURL = "https://en.autoplius.lt/ads/used-cars?make_id=99"
+    pageLinks = [baseURL + "&page_nr=" + str(x+1) for x in range(5)]
+    thread_list = []
+    carAdLinks = []
+    results = []
+    for link in pageLinks:
+        r = requests.get(link)
+        soup = bs(r.content, "lxml")
+        elems = soup.findAll("a", {"class": "announcement-item"})
+        for e in elems:
+            carAdLinks.append(e.get("href"))
 
     for ad in carAdLinks:
-        results.append(ParseAd(ad))
+        thread_list.append(threading.Thread(target=lambda q, arg1: q.put(ParseAd(arg1)), args=(que,ad)))
+    for thread in thread_list:
+        thread.start()
+    for thread in thread_list:
+        thread.join()
+    while not que.empty():
+        result = que.get()
+        results.append(result)
 
-allCars = json.dumps(results, indent=4, cls=CarEncoder)
-with open("all_cars.json", "wb") as f:
-    f.write(allCars.encode("utf-8"))
-    f.close()
+    allCars = json.dumps(results, indent=4, cls=CarEncoder)
+    with open("all_cars.json", "wb") as f:
+        f.write(allCars.encode("utf-8"))
+        f.close()
 
-prices = []
-mileages = []
-models = []
-equipment = []
+    prices = []
+    mileages = []
+    models = []
+    equipment = []
 
-for car in results:
-    prices.append(int(car.price))
-    mileages.append(car.mileage.replace("km", "").replace(" ", ""))
-    models.append(car.model)
-    count_features = list(car.features.values())
-    count = sum([len(listElem) for listElem in count_features])
-    equipment.append(count)
+    for car in results:
+        prices.append(int(car.price))
+        mileages.append(car.mileage.replace("km", "").replace(" ", ""))
+        models.append(car.model)
+        countFeatures = list(car.features.values())
+        count = sum([len(listElem) for listElem in countFeatures])
+        equipment.append(count)
 
-df = pd.DataFrame(list(zip(models, prices, mileages, equipment)), columns=[
-                  'models', 'prices', 'mileages', 'features/equipment'])
-avg_prc_mile_by_model = df.groupby(
-    ['models'])[["prices", "mileages"]].mean().round(0)
-unique_models = df['models'].nunique()
-features_for_every_model = df.groupby(['models'])[["features/equipment"]].sum()
-etc = df.groupby(['models']).describe()
-df.to_excel("output.xlsx", index=False)
-print("Average price and mileage by model")
-print(avg_prc_mile_by_model)
-print("\n")
-print("\n")
-print("Unique models count is: " + str(unique_models))
-print("\n")
-print("\n")
-print("Total count of features for every model")
-print(features_for_every_model)
-print("\n")
-print("\n")
-print(etc)
+    df = pd.DataFrame(list(zip(models, prices, mileages, equipment)), columns=[
+                      'models', 'prices', 'mileages', 'features/equipment'])
+    avg_prc_mile_by_model = df.groupby(
+        ['models'])[["prices", "mileages"]].mean().round(0)
+    unique_models = df['models'].nunique()
+    features_for_every_model = df.groupby(['models'])[["features/equipment"]].sum()
+    etc = df.groupby(['models']).describe()
+
+    print("Average price and mileage by model")
+    print(avg_prc_mile_by_model)
+    print("\n")
+    print("\n")
+    print("Unique models count is: " + str(unique_models))
+    print("\n")
+    print("\n")
+    print("Total count of features for every model")
+    print(features_for_every_model)
+    print("\n")
+    print("\n")
+    print(etc)

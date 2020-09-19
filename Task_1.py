@@ -55,5 +55,6 @@ if __name__ == "__main__":
     chromedriver = os.path.realpath("chromedriver.exe")
     driver = webdriver.Chrome(chromedriver)
     driver.get("https://mekass.wixsite.com/website")
+    scraperText()
     scraperIMG()
     driver.close()

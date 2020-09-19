@@ -4,8 +4,7 @@ import urllib.request
 import itertools
 import json
 import threading
-import math
-from datetime import datetime
+
 
 
 def downloader(url, path, name):
@@ -57,5 +56,4 @@ if __name__ == "__main__":
     driver = webdriver.Chrome(chromedriver)
     driver.get("https://mekass.wixsite.com/website")
     scraperIMG()
-    print(datetime.now() - startTime)
     driver.close()

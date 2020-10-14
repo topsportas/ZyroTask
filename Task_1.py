@@ -50,7 +50,6 @@ def scraperIMG():
         t.join()
 
 if __name__ == "__main__":
-    startTime = datetime.now()
     threads = []
     chromedriver = os.path.realpath("chromedriver.exe")
     driver = webdriver.Chrome(chromedriver)

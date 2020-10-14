@@ -71,9 +71,10 @@ if __name__ == "__main__":
     for link in pageLinks:
         r = requests.get(link)
         soup = bs(r.content, "lxml")
-        elems = soup.findAll("a", {"class": "announcement-item"})
+        elems = soup.findAll('a', {"class": "announcement-item"})
         for e in elems:
             carAdLinks.append(e.get("href"))
+        
 
     for ad in carAdLinks:
         thread_list.append(threading.Thread(target=lambda q, arg1: q.put(ParseAd(arg1)), args=(que,ad)))
